@@ -5,30 +5,37 @@
 
 using namespace std;
 
-// Función para aplicar Insertion Sort y contar comparaciones
-unsigned long long insertionSort(vector<int> &arr) {
+unsigned long long quickSort(vector<int> &arr, int inicio, int fin) {
     unsigned long long contadorComparaciones = 0;
-    int n = arr.size();
-
-    for (int i = 1; i < n; i++) {
-        int aux = arr[i];
-        int marcador = i;
-
-        // Comparar y desplazar elementos
-        while (marcador > 0 && aux < arr[marcador - 1]) {
-            arr[marcador] = arr[marcador - 1];
-            marcador--;
-            contadorComparaciones++;  // Cuenta cada comparación en el while
+    if (inicio < fin) {
+        contadorComparaciones++;
+        int i = inicio, j = fin;
+        int pivot = arr[(inicio + fin) / 2];
+        while (i <= j) {
+            while (arr[i] < pivot) {
+                i++;
+                contadorComparaciones++;
+            }
+            while (arr[j] > pivot) {
+                j--;
+                contadorComparaciones++;
+            }
+            contadorComparaciones++;
+            if (i <= j) {
+                swap(arr[i], arr[j]);
+                i++;
+                j--;
+            }
             contadorComparaciones++;
         }
 
-        // Inserción
-        arr[marcador] = aux;
-        contadorComparaciones++;  // Cuenta la comparación fallida que sale del while
+        // Llamadas recursivas para las dos mitades
+        contadorComparaciones += quickSort(arr, inicio, j);
+        contadorComparaciones += quickSort(arr, i, fin);
     }
-
     return contadorComparaciones;
 }
+
 
 
 // Función para mostrar el array
@@ -59,7 +66,7 @@ int main() {
 //        printArray(arr);
 
         // Aplicar Bubble Sort
-        unsigned long long cantidadCondicionales  = insertionSort(arr);
+        unsigned long long cantidadCondicionales  = quickSort(arr,0,arr.size() - 1);
         cout << "Cantidad de comparaciones numeros al Azar: " << cantidadCondicionales << endl;
         // Mostrar el array ordenado
         cout << "Array ordenado: "<< endl;
@@ -85,7 +92,7 @@ int main() {
 //        printArray(arr);
 
         // Aplicar Bubble Sort
-        unsigned long long cantidadCondicionales  = insertionSort(arr);
+        unsigned long long cantidadCondicionales  = quickSort(arr,0,arr.size() - 1);
         cout << "Cantidad de comparaciones numeros ordenados: " << cantidadCondicionales << endl;
         // Mostrar el array ordenado
         cout << "Array ordenado: "<< endl;
@@ -111,7 +118,7 @@ int main() {
 //        printArray(arr);
 
         // Aplicar Bubble Sort
-        unsigned long long cantidadCondicionales  = insertionSort(arr);
+        unsigned long long cantidadCondicionales  = quickSort(arr,0,arr.size() - 1);
         cout << "Cantidad de comparaciones numeros ordenados: " << cantidadCondicionales << endl;
         // Mostrar el array ordenado
         cout << "Array ordenado: "<< endl;
